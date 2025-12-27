@@ -5,8 +5,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     MONGODB_URI: str
     MONGODB_DB_NAME: str
-    ALLOWED_ORIGINS: List[str]
-    SESSION_EXPIRES_DAYS: int
+    ALLOWED_ORIGINS: List[str] = ["*"]
+    SESSION_EXPIRES_DAYS: int = 7
     COOKIE_SECURE: bool = False # set to true on production
     SESSION_COOKIE_NAME: str = "session_token"
 

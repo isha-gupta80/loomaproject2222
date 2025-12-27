@@ -36,19 +36,35 @@ This dashboard enables Looma administrators to:
 ```bash
 # Clone repository
 git clone <repository-url>
-cd looma-dashboard
+```
+***Frontend:***
 
-# Install dependencies
+```bash
+cd looma-dashboard/frontend
+
+# Install dependencies for frontend
 npm install
-
-# Copy environment template
-cp .env.example .env.local
 
 # Start development server
 npm run dev
 ```
 
-Open [http://localhost:5000](http://localhost:5000)
+***Backend:***
+
+```bash
+cd ../backend
+
+# Create virtual environment
+python -m venv .venv
+
+# Install dependencies for frontend
+pip install -r requirements.txt
+
+# Start development server
+fastapi dev app/main.py
+```
+
+Open [http://localhost:3000](http://localhost:3000)
 
 ### Demo Mode
 
@@ -66,9 +82,10 @@ If `MONGODB_URI` is not configured, the app runs in **demo mode** with 144 sampl
    ```
    mongodb+srv://<username>:<password>@<cluster>.mongodb.net/looma-dashboard
    ```
-6. Add to `.env.local`:
+6. Add to `backend/.env`:
    ```env
    MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/looma-dashboard
+   MONGODB_DB_NAME="looma-dashboard"
    ```
 
 ### Option 2: Local MongoDB
