@@ -57,6 +57,9 @@ cd ../backend
 # Create virtual environment
 python -m venv .venv
 
+# Activate virtual environment
+source .venv/bin/activate
+
 # Install dependencies for frontend
 pip install -r requirements.txt
 
