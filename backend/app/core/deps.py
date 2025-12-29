@@ -40,29 +40,29 @@ async def admin_only(request: Request):
     session_token = request.cookies.get(settings.SESSION_COOKIE_NAME)
     if not session_token:
         print("AUTH: error")
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "User not authorized.")
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "User not authenticated.")
 
     user = await get_user_from_session(session_token)
     if not user:
         print("AUTH: User does not exist")
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "User not authorized.")
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid Session.")
 
     if user.role != "admin":
         print("AUTH: error: user is not admin")
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "User not authorized.")
+        raise HTTPException(status.HTTP_403_FORBIDDEN, "Admin access required.")
 
 async def admin_and_staff(request: Request):
     session_token = request.cookies.get(settings.SESSION_COOKIE_NAME)
     if not session_token:
         print("AUTH: error")
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "User not authorized.")
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "User not authenticated.")
 
     user = await get_user_from_session(session_token)
     if not user:
         print("AUTH: User does not exist")
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "User not authorized.")
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid Session.")
 
     if user.role != "admin" or user.role != "staff":
         print("AUTH: error: user is not admin or staff")
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "User not authorized.")
+        raise HTTPException(status.HTTP_403_FORBIDDEN, "Admin or staff access required.")
 
