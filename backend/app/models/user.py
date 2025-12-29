@@ -11,7 +11,7 @@ class UserDoc(Document):
     passwordHash: str
     role: Role
     createdAt: datetime
-    lasstLogin: datetime | None = None
+    lastLogin: datetime | None = None
 
     class Settings:
         name = "users"
