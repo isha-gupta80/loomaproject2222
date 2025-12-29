@@ -9,3 +9,12 @@ class UserOut(BaseModel):
     username: str
     email: EmailStr
     role: Role
+
+class UserAdd(BaseModel):
+    username: str
+    email: EmailStr
+    password: str
+    role: Role
+
+class UserDelete(BaseModel):
+    username: str

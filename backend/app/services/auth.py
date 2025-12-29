@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta, timezone
-from fastapi import HTTPException, status
 from app.core.security import new_token, verify_password
 from app.models.user import UserDoc
 from app.models.session import SessionDoc
