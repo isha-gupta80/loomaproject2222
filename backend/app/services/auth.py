@@ -11,7 +11,6 @@ async def login(identifier: str, password: str):
     )
 
     if not user:
-        print(identifier)
         print("LOGIN FAIL: user not found")
         return None
 
