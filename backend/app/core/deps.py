@@ -62,7 +62,7 @@ async def admin_and_staff(request: Request):
         print("AUTH: User does not exist")
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid Session.")
 
-    if user.role != "admin" or user.role != "staff":
+    if (user.role != "admin") and (user.role != "staff"):
         print("AUTH: error: user is not admin or staff")
         raise HTTPException(status.HTTP_403_FORBIDDEN, "Admin or staff access required.")
 
