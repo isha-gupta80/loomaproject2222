@@ -15,6 +15,3 @@ class UserAdd(BaseModel):
     email: EmailStr
     password: str
     role: Role
-
-class UserDelete(BaseModel):
-    username: str

@@ -3,3 +3,6 @@ class UserExists(Exception):
 
 class EmailExists(Exception):
     pass
+
+class UserNotFound(Exception):
+    pass
