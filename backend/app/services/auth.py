@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta, timezone
-from app.core.security import new_token, verify_password
+from app.core.exceptions import InvalidCredentials, UserNotFound
+from app.core.security import get_password_hash, new_token, verify_password
 from app.models.user import UserDoc
 from app.models.session import SessionDoc
 from app.core.config import settings
@@ -58,3 +59,15 @@ async def get_user_from_session(token: str) -> UserDoc | None:
 
     user = await UserDoc.find_one(UserDoc.id == user_id)
     return user
+
+async def update_user_password(user_id, old_password, new_password):
+    user_to_update = await UserDoc.find_one(UserDoc.id == user_id)
+
+    if not user_to_update:
+        raise UserNotFound
+
+    if not verify_password(old_password, user_to_update.passwordHash):
+        raise InvalidCredentials
+
+    user_to_update.passwordHash = get_password_hash(new_password)
+    await user_to_update.save()

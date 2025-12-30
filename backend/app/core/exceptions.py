@@ -6,3 +6,6 @@ class EmailExists(Exception):
 
 class UserNotFound(Exception):
     pass
+
+class InvalidCredentials(Exception):
+    pass

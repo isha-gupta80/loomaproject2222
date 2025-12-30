@@ -1,11 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 
 from app.core.deps import get_current_user
+from app.core.exceptions import InvalidCredentials
 from app.core.security import get_password_hash, verify_password
 from app.schemas.auth import UserLoginUsername, UserLogin
-from app.schemas.user import UserOut
+from app.schemas.user import UserOut, UserUpdatePassword
 from app.services.user import get_user_by_username
-from app.services.auth import login as login_svc, logout as logout_svc
+from app.services.auth import login as login_svc, logout as logout_svc, update_user_password as update_user_password_svc
 from app.core.config import settings
 
 
@@ -45,3 +46,10 @@ async def logout(request: Request, response: Response):
 @router.get("/me")
 async def get_me(current_user: UserOut = Depends(get_current_user)):
     return current_user
+
+@router.patch("/update_password", status_code=204)
+async def update_password(password_data: UserUpdatePassword, current_user: UserOut = Depends(get_current_user)):
+    try:
+        await update_user_password_svc(current_user.id, password_data.old_password, password_data.new_password)
+    except InvalidCredentials:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid credentials")
