@@ -37,6 +37,9 @@ async def get_current_session(
     return session_token
 
 async def admin_only(request: Request):
+    import traceback
+    print("ADMIN_ONLY CALLED FROM:")
+    traceback.print_stack(limit=5)
     session_token = request.cookies.get(settings.SESSION_COOKIE_NAME)
     if not session_token:
         print("AUTH: error")
@@ -48,6 +51,7 @@ async def admin_only(request: Request):
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid Session.")
 
     if user.role != "admin":
+        print(request.method)
         print("AUTH: error: user is not admin")
         raise HTTPException(status.HTTP_403_FORBIDDEN, "Admin access required.")
 

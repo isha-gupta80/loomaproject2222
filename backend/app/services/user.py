@@ -5,7 +5,7 @@ from pydantic import EmailStr
 from app.core.exceptions import EmailExists, UserExists, UserNotFound
 from app.core.security import get_password_hash
 from app.models.user import UserDoc
-from app.schemas.user import UserAdd, UserEdit, UserOut
+from app.schemas.user import UserAdd, UserEdit, UserEditMe, UserOut
 
 
 async def get_user_by_email(email: EmailStr) -> UserDoc | None:
@@ -53,6 +53,24 @@ async def delete_user_by_id(user_id: PydanticObjectId):
 
 
 async def edit_user(user_id: PydanticObjectId, user_data: UserEdit) -> UserOut:
+    user_to_update = await UserDoc.find_one(UserDoc.id == user_id)
+
+    if not user_to_update:
+        raise UserNotFound
+
+    if user_data.username and await get_user_by_username(user_data.username) and user_to_update.username != user_data.username:
+        raise UserExists
+
+    if user_data.email and await get_user_by_email(user_data.email) and user_to_update.email != user_data.email:
+        raise EmailExists
+
+    update_dict = user_data.model_dump(exclude_unset=True, exclude_none=True)
+
+    await user_to_update.set(update_dict)
+
+    return UserOut(**user_to_update.model_dump())
+
+async def edit_user_me(user_id: PydanticObjectId, user_data: UserEditMe) -> UserOut:
     user_to_update = await UserDoc.find_one(UserDoc.id == user_id)
 
     if not user_to_update:

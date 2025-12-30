@@ -21,6 +21,10 @@ class UserEdit(BaseModel):
     email: EmailStr | None = None
     role: Role | None = None
 
+class UserEditMe(BaseModel):
+    username: str | None = None
+    email: EmailStr | None = None
+
 class UserUpdatePassword(BaseModel):
     old_password: str
     new_password: str

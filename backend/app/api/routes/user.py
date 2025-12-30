@@ -1,9 +1,9 @@
 from beanie import PydanticObjectId
 from fastapi import APIRouter, Depends, HTTPException, status
-from app.core.deps import admin_only
+from app.core.deps import admin_only, get_current_user
 from app.core.exceptions import EmailExists, InvalidCredentials, UserExists, UserNotFound
-from app.services.user import add_user as add_user_svc, delete_user_by_id, edit_user as edit_user_svc
-from app.schemas.user import UserAdd, UserEdit, UserUpdatePassword
+from app.services.user import add_user as add_user_svc, delete_user_by_id, edit_user as edit_user_svc, edit_user_me as edit_user_me_svc
+from app.schemas.user import UserAdd, UserEdit, UserEditMe, UserOut, UserUpdatePassword
 
 
 router = APIRouter()
@@ -18,6 +18,19 @@ async def add_user(user_data: UserAdd, access = Depends(admin_only)):
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "User with that email already exists")
         
     return new_user
+
+
+@router.patch("/me")
+async def update_my_info(user_data: UserEditMe, current_user: UserOut = Depends(get_current_user)):
+    try:
+        edited_user = await edit_user_me_svc(current_user.id, user_data)
+    except UserExists:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "User already exists")
+    except EmailExists:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "User with that email already exists")
+    except UserNotFound:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "User not found")
+    return edited_user
 
 @router.delete("/{user_id}", status_code=204)
 async def delete_user(user_id: PydanticObjectId , access = Depends(admin_only)):
