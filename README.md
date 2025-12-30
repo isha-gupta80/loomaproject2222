@@ -178,6 +178,7 @@ looma-dashboard/
 | POST | `/api/auth/login` | User login |
 | POST | `/api/auth/logout` | User logout |
 | GET | `/api/auth/me` | Current user info |
+| PATCH | `/api/auth/change_password` | Update user password |
 
 ### Schools
 | Method | Endpoint | Description |
@@ -190,6 +191,13 @@ looma-dashboard/
 | PUT | `/api/schools/:id` | Update school |
 | DELETE | `/api/schools/:id` | Delete school |
 | PATCH | `/api/schools/:id/status` | Update status |
+
+### User
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/users/add` | Add a user |
+| DELETE | `/api/users/:user_id` | Delete a user |
+| PATCH | `/api/users/:user_id` | Update user data |
 
 ### Logs
 | Method | Endpoint | Description |
