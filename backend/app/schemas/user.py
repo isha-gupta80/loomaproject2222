@@ -15,3 +15,12 @@ class UserAdd(BaseModel):
     email: EmailStr
     password: str
     role: Role
+
+class UserEdit(BaseModel):
+    username: str | None = None
+    email: EmailStr | None = None
+    role: Role | None = None
+
+class UserUpdatePassword(BaseModel):
+    old_password: str
+    new_password: str

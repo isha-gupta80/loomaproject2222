@@ -1,9 +1,9 @@
 from beanie import PydanticObjectId
 from fastapi import APIRouter, Depends, HTTPException, status
 from app.core.deps import admin_only
-from app.core.exceptions import EmailExists, UserExists, UserNotFound
-from app.services.user import add_user as add_user_svc, delete_user_by_id
-from app.schemas.user import UserAdd
+from app.core.exceptions import EmailExists, InvalidCredentials, UserExists, UserNotFound
+from app.services.user import add_user as add_user_svc, delete_user_by_id, edit_user as edit_user_svc
+from app.schemas.user import UserAdd, UserEdit, UserUpdatePassword
 
 
 router = APIRouter()
@@ -25,3 +25,15 @@ async def delete_user(user_id: PydanticObjectId , access = Depends(admin_only)):
         await delete_user_by_id(user_id)
     except UserNotFound:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "User not found")
+
+@router.patch("/{user_id}")
+async def update_user(user_id: PydanticObjectId, user_data: UserEdit, access = Depends(admin_only)):
+    try:
+        edited_user = await edit_user_svc(user_id, user_data)
+    except UserExists:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "User already exists")
+    except EmailExists:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "User with that email already exists")
+    except UserNotFound:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "User not found")
+    return edited_user
