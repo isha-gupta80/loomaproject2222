@@ -47,7 +47,7 @@ async def logout(request: Request, response: Response):
 async def get_me(current_user: UserOut = Depends(get_current_user)):
     return current_user
 
-@router.patch("/update_password", status_code=204)
+@router.patch("/change_password", status_code=204)
 async def update_password(password_data: UserUpdatePassword, current_user: UserOut = Depends(get_current_user)):
     try:
         await update_user_password_svc(current_user.id, password_data.old_password, password_data.new_password)
