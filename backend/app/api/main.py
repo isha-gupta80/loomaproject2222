@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from app.api.routes import auth, schools, user
-from app.core.deps import admin_and_staff, get_current_session
+from app.core.deps import get_current_session
 
 
 api_router = APIRouter()

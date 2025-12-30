@@ -1,9 +1,9 @@
 from beanie import PydanticObjectId
 from fastapi import APIRouter, Depends, HTTPException, status
 from app.core.deps import admin_only, get_current_user
-from app.core.exceptions import EmailExists, InvalidCredentials, UserExists, UserNotFound
+from app.core.exceptions import EmailExists, UserExists, UserNotFound
 from app.services.user import add_user as add_user_svc, delete_user_by_id, edit_user as edit_user_svc, edit_user_me as edit_user_me_svc
-from app.schemas.user import UserAdd, UserEdit, UserEditMe, UserOut, UserUpdatePassword
+from app.schemas.user import UserAdd, UserEdit, UserEditMe, UserOut
 
 
 router = APIRouter()

@@ -2,10 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 
 from app.core.deps import get_current_user
 from app.core.exceptions import InvalidCredentials
-from app.core.security import get_password_hash, verify_password
-from app.schemas.auth import UserLoginUsername, UserLogin
+from app.schemas.auth import UserLoginUsername
 from app.schemas.user import UserOut, UserUpdatePassword
-from app.services.user import get_user_by_username
 from app.services.auth import login as login_svc, logout as logout_svc, update_user_password as update_user_password_svc
 from app.core.config import settings
 

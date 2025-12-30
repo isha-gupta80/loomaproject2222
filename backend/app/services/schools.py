@@ -3,7 +3,7 @@ from typing import Dict, List
 from beanie import PydanticObjectId
 from fastapi import HTTPException, status
 from app.models.school import School
-from app.schemas.school import SchoolCreate, SchoolOut, SchoolStatus, SchoolUpdate, SchoolUpdateStatus
+from app.schemas.school import SchoolCreate, SchoolOut, SchoolStatus, SchoolUpdate
 from datetime import datetime, timezone
 
 from app.utils.dates import now_utc
